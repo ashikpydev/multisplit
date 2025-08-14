@@ -1,10 +1,13 @@
 capture program drop multisplit
 program define multisplit
     version 17.0
-    syntax varname, Prefix(string)
 
+    * Make prefix optional
+    syntax varname, Prefix(string optional)
+
+    * Use variable name as prefix if not provided
     local mainvar "`varlist'"
-    local prefix "`prefix'"
+    if "`prefix'" == "" local prefix "`mainvar'"
 
     // Step 1: Save labels & code list from existing dummies
     local varlabels
@@ -47,7 +50,7 @@ program define multisplit
     foreach code of local codes {
         gen byte `prefix'_`code' = strpos(" " + `mainvar' + " ", " `code' ") > 0
 
-        // Find label from saved list
+        * Find label from saved list
         local foundlbl ""
         foreach lblpair of local varlabels {
             local thiscode = substr("`lblpair'", 1, strpos("`lblpair'", char(1)) - 1)
