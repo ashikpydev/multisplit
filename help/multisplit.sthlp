@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.3.0 14aug2025 Ashiqur Rahman Rony}
+{* *! version 1.3.1 14aug2025 Ashiqur Rahman Rony}
 {cmd:help multisplit}
 {hline}
 
@@ -24,8 +24,8 @@ Existing dummy variables are dropped and regenerated. Labels from previous dummi
 {hline}
 {title:Options}
 
-{dlgtab:prefix(string)}
-Specifies the prefix for dummy variables. If omitted, the main variable name is used.
+{pstd}
+{cmd:prefix(string)} — Prefix for dummy variables. Default is the main variable name.
 
 {hline}
 {title:Remarks}
@@ -34,12 +34,11 @@ Specifies the prefix for dummy variables. If omitted, the main variable name is 
 Useful for multiple-response survey data where codes are space-separated (e.g., "1 3 6").  
 
 This command automates repetitive tasks:
-
-{p 8 12 2}- Drops existing dummy variables.  
-{p 8 12 2}- Preserves and reapplies labels.  
-{p 8 12 2}- Detects new codes in the main variable.  
-{p 8 12 2}- Generates all dummies, including codes with no current responses.  
-{p 8 12 2}- Initializes dummies as missing (.) and then replaces with 1/0 for valid cases.
+- Drops existing dummy variables
+- Preserves and reapplies labels
+- Detects new codes in the main variable
+- Generates all dummies, including codes with no current responses
+- Initializes dummies as missing (.) and then replaces with 1/0 for valid cases
 
 Works with multiple spaces/tabs and supports both numeric and string codes.
 
