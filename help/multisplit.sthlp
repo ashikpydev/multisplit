@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.2.0 14aug2025 Ashikur Rahman}
+{* *! version 1.2.1 14aug2025 Ashiqur Rahman Rony}
 {cmd:help multisplit}
 {hline}
 
@@ -36,10 +36,14 @@ Useful for multiple-response survey data where codes are space-separated (e.g., 
 It automates manual tasks:
 
 {p 8 12 2}- Drops existing dummy variables.
+
 {p 8 12 2}- Preserves and reapplies labels.
+
 {p 8 12 2}- Detects new codes.
+
 {p 8 12 2}- Generates all dummies, even if code has no responses.
 
+{pstd}
 Works with multiple spaces/tabs and both numeric and string codes.
 
 {hline}
