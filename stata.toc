@@ -1,0 +1,2 @@
+v 1
+p multisplit Automatically generate dummies for multiple response variable
