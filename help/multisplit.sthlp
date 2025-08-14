@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.1.0 14aug2025 Ashikur Rahman}
+{* *! version 1.1.1 14aug2025 Ashikur Rahman}
 {cmd:help multisplit}
 {hline}
 
