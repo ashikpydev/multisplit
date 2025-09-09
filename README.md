@@ -2,7 +2,6 @@
 
 **Author:** Ashiqur Rahman Rony
 **Email:** ashiqurrahman.stat@gmail.com
-**Version:** 1.6.2  
 **Description:** Stata program to split multiple-response variables into dummy variables (0/1), with support for repeat groups.
 
 ---
