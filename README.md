@@ -1,11 +1,7 @@
-*! version 1.6.2
-*! multisplit.ado
-*! Author: Ashiqur Rahman Rony
-*! Email: ashiqurrahman.stat@gmail.com
-*! Description: Stata program to split multiple-response variables
-*!              into dummy variables (0/1), with support for repeat groups
-*! Notes: Preserves existing dummies, supports repeat groups, and updates dummies if main variable changes
+# multisplit
 
+**Author:** Ashiqur Rahman Rony  
+**Email:** ashiqurrahman.stat@gmail.com  
 
 ## Install
 ```stata
