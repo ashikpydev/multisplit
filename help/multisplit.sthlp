@@ -1,72 +1,44 @@
-{smcl}
-{* *! version 1.3.1 14aug2025 Ashiqur Rahman Rony}
-{cmd:help multisplit}
-{hline}
+*-------------------------------------------------------
+* multisplit.sthlp
+* Help file for multisplit.ado
+*-------------------------------------------------------
 
-{title:Title}
+TITLE
+    multisplit — Split multiple-response variables into dummies
 
-{cmd:multisplit} — Split a multiple-response variable into dummy variables with label preservation
+SYNOPSIS
+    multisplit varname [repeatnum]
 
-{hline}
-{title:Syntax}
+DESCRIPTION
+    multisplit creates dummy variables for multiple-response variables.
+    It handles numeric or string responses and supports repeat groups.
+    Existing dummies and labels are preserved.
 
-{pstd}
-{cmd:multisplit} {it:varname} [, {cmd:prefix(}{it:string}{cmd:)}}]
+    Optionally, a repeat number can be provided to indicate
+    repeated variables in a survey.
 
-{hline}
-{title:Description}
+EXAMPLES
+    * Simple multiple-response split
+    . multisplit hhr_occu_1
 
-{pstd}
-{cmd:multisplit} takes a multiple-response variable (e.g., a survey question with space-separated codes) and generates dummy variables (0/1) for each unique code.  
+    * With repeat group
+    . multisplit hhr_occu_2 2
 
-Existing dummy variables are dropped and regenerated. Labels from previous dummies are preserved. Dummy variables are initialized as missing (.) and then set to 1/0 for valid cases.
+FEATURES
+    - Automatically splits space/tab-delimited multiple responses
+    - Preserves existing dummy variables and labels
+    - Updates dummies when main variable changes
+    - Supports repeat group variables
+    - Automatically orders variables: existing dummies first, new dummies next
+    - Generates informative variable labels
 
-{hline}
-{title:Options}
+AUTHOR
+    Ashiqur Rahman Rony
+    Email: ashiqurrahman.stat@gmail.com
 
-{pstd}
-{cmd:prefix(string)} — Prefix for dummy variables. Default is the main variable name.
+VERSION
+    1.6.2
 
-{hline}
-{title:Remarks}
-
-{pstd}
-Useful for multiple-response survey data where codes are space-separated (e.g., "1 3 6").  
-
-This command automates repetitive tasks:
-- Drops existing dummy variables
-- Preserves and reapplies labels
-- Detects new codes in the main variable
-- Generates all dummies, including codes with no current responses
-- Initializes dummies as missing (.) and then replaces with 1/0 for valid cases
-
-Works with multiple spaces/tabs and supports both numeric and string codes.
-
-{hline}
-{title:Examples}
-
-{pstd}
-Split variable using default prefix (same as variable name):
-{cmd:. multisplit g208}
-
-Split variable with a custom prefix:
-{cmd:. multisplit g208, prefix(home)}
-
-Update values and regenerate dummies with preserved labels:
-{cmd:. replace g208 = "1 3" if id == 5}
-{cmd:. multisplit g208}
-
-{hline}
-{title:Stored results}
-
-{pstd}None.
-
-{hline}
-{title:Author}
-
-{pstd}
-Ashiqur Rahman Rony  
-Email: ashiqurrahman.stat@gmail.com  
-License: Apache License 2.0
-
-{hline}
+NOTES
+    Ensure the main variable is correctly cleaned (trim spaces or tabs).
+    Dummies are numeric (0/1).
