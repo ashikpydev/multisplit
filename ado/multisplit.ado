@@ -139,22 +139,23 @@ program define multisplit
 	* Reset/update all old dummies according to current mainvar
 	* ----------------------------
 	foreach v of local existdummies {
-		capture confirm variable `v'
-		if !_rc {
-			* check storage type
-			capture confirm numeric variable `v'
-			if !_rc {
-				local code = subinstr("`v'", "`prefix'_","",.)
-				if "`repeatnum'" != "" local code = subinstr("`code'", "_`repeatnum'","",.)
-				replace `v' = 0
-				replace `v' = 1 if regexm(" " + `mainvar' + " ", "( |^)`code'( |$)")
-			}
-			else {
-				* if string → skip (don't overwrite string vars like g208_oths)
-				continue
-			}
-		}
+	    capture confirm variable `v'
+	    if !_rc {
+	        * check storage type
+	        capture confirm numeric variable `v'
+	        if !_rc {
+	            local code = subinstr("`v'", "`prefix'_","",.)
+	            if "`repeatnum'" != "" local code = subinstr("`code'", "_`repeatnum'","",.)
+	            replace `v' = 0
+	            replace `v' = 1 if regexm(" " + `mainvar' + " ", "( |^)`code'( |$)")
+	        }
+	        else {
+	            * if string → skip (don’t overwrite string vars like g208_oths)
+	            continue
+	        }
+	    }
 	}
+
 
     * ----------------------------
     * Order: existing dummies first, then new, after main variable
