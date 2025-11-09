@@ -1,4 +1,4 @@
-*! version 1.6.2
+*! version 1.6.3
 *! multisplit.ado
 *! Author: Ashiqur Rahman Rony
 *! Description: Robust multiple-response split into dummies with repeat groups,
@@ -66,18 +66,21 @@ program define multisplit
     * ----------------------------
     * Generate unique numeric codes
     * ----------------------------
-    tempvar temp
+    tempvar temp isblank
 
     * --- FIX for numeric mainvar ---
     capture confirm string variable `mainvar'
     if _rc {
         gen strL `temp' = string(`mainvar')
+        gen byte `isblank' = missing(`mainvar')          // numeric missing -> blank
     } 
     else {
         gen strL `temp' = `mainvar'
+        replace `temp' = subinstr(`temp', char(9),   " ", .)   // tabs -> space
+        replace `temp' = subinstr(`temp', char(160), " ", .)   // NBSP -> space
+        replace `temp' = trim(`temp')
+        gen byte `isblank' = `temp' == ""                     // empty after cleaning
     }
-    replace `temp' = trim(`temp')
-    replace `temp' = subinstr(`temp', char(9), " ", .)
 
     levelsof `temp', local(rows)
     local codes ""
@@ -112,6 +115,7 @@ program define multisplit
             gen byte `varname' = 0
         }
         replace `varname' = 1 if regexm(" " + `mainvar' + " ", "( |^)`code'( |$)")
+        replace `varname' = . if `isblank'                        // ensure blank -> .
         local newdummies "`newdummies' `varname'"
 
         * Apply saved label
@@ -135,27 +139,27 @@ program define multisplit
         }
     }
 
-	* ----------------------------
-	* Reset/update all old dummies according to current mainvar
-	* ----------------------------
-	foreach v of local existdummies {
-	    capture confirm variable `v'
-	    if !_rc {
-	        * check storage type
-	        capture confirm numeric variable `v'
-	        if !_rc {
-	            local code = subinstr("`v'", "`prefix'_","",.)
-	            if "`repeatnum'" != "" local code = subinstr("`code'", "_`repeatnum'","",.)
-	            replace `v' = 0
-	            replace `v' = 1 if regexm(" " + `mainvar' + " ", "( |^)`code'( |$)")
-	        }
-	        else {
-	            * if string → skip (don’t overwrite string vars like g208_oths)
-	            continue
-	        }
-	    }
-	}
-
+    * ----------------------------
+    * Reset/update all old dummies according to current mainvar
+    * ----------------------------
+    foreach v of local existdummies {
+        capture confirm variable `v'
+        if !_rc {
+            * check storage type
+            capture confirm numeric variable `v'
+            if !_rc {
+                local code = subinstr("`v'", "`prefix'_","",.)
+                if "`repeatnum'" != "" local code = subinstr("`code'", "_`repeatnum'","",.)
+                replace `v' = 0
+                replace `v' = 1 if regexm(" " + `mainvar' + " ", "( |^)`code'( |$)")
+                replace `v' = . if `isblank'                    // ensure blank -> .
+            }
+            else {
+                * if string → skip (don’t overwrite string vars like g208_oths)
+                continue
+            }
+        }
+    }
 
     * ----------------------------
     * Order: existing dummies first, then new, after main variable
@@ -163,8 +167,8 @@ program define multisplit
     local allorder "`existdummies' `newdummies'"
     order `allorder', after(`mainvar')
 
-    * Drop temp variable
-    drop `temp'
+    * Drop temp variable(s)
+    drop `temp' `isblank'
 
     * ----------------------------
     * Summary of changes
